@@ -1,10 +1,9 @@
 steps:
   #setup env
-  - name: "gcr.io/cloud-builders/gcloud"
-    entrypoint: "bash"
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
     args:
     [
-      '-c',
       "export DB_HOST=$(gcloud secrets versions access latest --secret=DB_HOST --format='value(payload.data)')",
       "export DB_NAME=$(gcloud secrets versions access latest --secret=DB_NAME --format='value(payload.data)')",
       "export DB_PASSWORD=$(gcloud secrets versions access latest --secret=DB_PASSWORD --format='value(payload.data)')",
@@ -12,7 +11,6 @@ steps:
       "export PROJECT_ID=$(gcloud secrets versions access latest --secret=PROJECT_ID --format='value(payload.data)')",
       "export SECRET_KEY=$(gcloud secrets versions access latest --secret=SECRET_KEY --format='value(payload.data)')",
       "export SESSION_SECRET_KEY=$(gcloud secrets versions access latest --secret=SESSION_SECRET_KEY --format='value(payload.data)')",
-      
     ]
 
 
