@@ -10,7 +10,31 @@ steps:
         "build",
         "-t",
         "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
+        "--build-arg",
+        "DB_HOST=$$DB_HOST",
+        "--build-arg",
+        "DB_NAME=$$DB_NAME",
+        "--build-arg",
+        "DB_PASSWORD=$$DB_PASSWORD",
+        "--build-arg",
+        "DB_USERNAME=$$DB_USERNAME",
+        "--build-arg",
+        "PROJECT_ID=$$PROJECT_ID",
+        "--build-arg",
+        "SECRET_KEY=$$SECRET_KEY",
+        "--build-arg",
+        "SESSION_SECRET_KEY=$$SESSION_SECRET_KEY",
         ".",
+      ]
+    secretEnv:
+      [
+        "DB_HOST",
+        "DB_NAME",
+        "DB_PASSWORD",
+        "DB_USERNAME",
+        "PROJECT_ID",
+        "SECRET_KEY",
+        "SESSION_SECRET_KEY",
       ]
   #push image
   - name: "gcr.io/cloud-builders/docker"
@@ -19,6 +43,7 @@ steps:
         "push",
         "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
       ]
+
   #deploy image
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "gcloud"
@@ -33,21 +58,10 @@ steps:
         "--service-account=572216952553-compute@developer.gserviceaccount.com",
         "--cpu=2",
         "--max-instances=10",
-        "--set-env-vars=DB_HOST=$$DB_HOST, DB_NAME=$$DB_NAME, DB_PASSWORD=$$DB_PASSWORD, DB_USERNAME=$$DB_USERNAME, PROJECT_ID=$$PROJECT_ID, SECRET_KEY=$$SECRET_KEY, SESSION_SECRET_KEY=$$SESSION_SECRET_KEY",
         "--set-cloudsql-instances=c23-pc660-ready2eat:asia-southeast2:ready2eat-db",
         "--vpc-connector=projects/c23-pc660-ready2eat/locations/asia-southeast2/connectors/ready2eat-vpc-access",
         "--region=asia-southeast2",
         "--project=c23-pc660-ready2eat",
-      ]
-    secretEnv:
-      [
-        "DB_HOST",
-        "DB_NAME",
-        "DB_PASSWORD",
-        "DB_USERNAME",
-        "PROJECT_ID",
-        "SECRET_KEY",
-        "SESSION_SECRET_KEY",
       ]
 
 availableSecrets:
