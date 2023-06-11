@@ -66,3 +66,13 @@ steps:
         "--region=asia-southeast2",
         "--project=c23-pc660-ready2eat",
       ]
+
+substitutions:
+  _DB_HOST: "$DB_HOST"
+  _DB_NAME: "$DB_NAME"
+  _DB_PASSWORD: "$DB_PASSWORD"
+  _DB_USERNAME: "$DB_USERNAME"
+  _PROJECT_ID: "$PROJECT_ID"
+  _SECRET_KEY: "$SECRET_KEY"
+  _SESSION_SECRET_KEY: "$SESSION_SECRET_KEY"
+
