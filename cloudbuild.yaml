@@ -24,19 +24,19 @@ steps:
         "-t",
         "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
         "--build-arg",
-        "DB_HOST=$_DB_HOST",
+        "DB_HOST=$(echo $DB_HOST)",
         "--build-arg",
-        "DB_NAME=$_DB_NAME",
+        "DB_NAME=$(echo $DB_NAME)",
         "--build-arg",
-        "DB_PASSWORD=$_DB_PASSWORD",
+        "DB_PASSWORD=$(echo $DB_PASSWORD)",
         "--build-arg",
-        "DB_USERNAME=$_DB_USERNAME",
+        "DB_USERNAME=$(echo $DB_USERNAME)",
         "--build-arg",
-        "PROJECT_ID=$_PROJECT_ID",
+        "PROJECT_ID=$(echo $PROJECT_ID)",
         "--build-arg",
-        "SECRET_KEY=$_SECRET_KEY",
+        "SECRET_KEY=$(echo $SECRET_KEY)",
         "--build-arg",
-        "SESSION_SECRET_KEY=$_SESSION_SECRET_KEY",
+        "SESSION_SECRET_KEY=$(echo $SESSION_SECRET_KEY)",
         ".",
       ]
   #push image
@@ -66,11 +66,6 @@ steps:
         "--region=asia-southeast2",
         "--project=c23-pc660-ready2eat",
       ]
-substitutions:
-  _DB_HOST: "$DB_HOST"
-  _DB_NAME: "$DB_NAME"
-  _DB_PASSWORD: "$DB_PASSWORD"
-  _DB_USERNAME: "$DB_USERNAME"
-  _PROJECT_ID: "$PROJECT_ID"
-  _SECRET_KEY: "$SECRET_KEY"
-  _SESSION_SECRET_KEY: "$SESSION_SECRET_KEY"
+
+
+
