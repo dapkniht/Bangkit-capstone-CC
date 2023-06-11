@@ -1,56 +1,54 @@
 steps:
-  #setup env
+  # Setup env
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        export DB_HOST=$(gcloud secrets versions access latest --secret=DB_HOST --format='value(payload.data)')
+        export DB_NAME=$(gcloud secrets versions access latest --secret=DB_NAME --format='value(payload.data)')
+        export DB_PASSWORD=$(gcloud secrets versions access latest --secret=DB_PASSWORD --format='value(payload.data)')
+        export DB_USERNAME=$(gcloud secrets versions access latest --secret=DB_USERNAME --format='value(payload.data)')
+        export PROJECT_ID=$(gcloud secrets versions access latest --secret=PROJECT_ID --format='value(payload.data)')
+        export SECRET_KEY=$(gcloud secrets versions access latest --secret=SECRET_KEY --format='value(payload.data)')
+        export SESSION_SECRET_KEY=$(gcloud secrets versions access latest --secret=SESSION_SECRET_KEY --format='value(payload.data)')
+
+  # Setup Docker
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "gcloud"
     args:
-    [
-      "export DB_HOST=$(gcloud secrets versions access latest --secret=DB_HOST --format='value(payload.data)')",
-      "export DB_NAME=$(gcloud secrets versions access latest --secret=DB_NAME --format='value(payload.data)')",
-      "export DB_PASSWORD=$(gcloud secrets versions access latest --secret=DB_PASSWORD --format='value(payload.data)')",
-      "export DB_USERNAME=$(gcloud secrets versions access latest --secret=DB_USERNAME --format='value(payload.data)')",
-      "export PROJECT_ID=$(gcloud secrets versions access latest --secret=PROJECT_ID --format='value(payload.data)')",
-      "export SECRET_KEY=$(gcloud secrets versions access latest --secret=SECRET_KEY --format='value(payload.data)')",
-      "export SESSION_SECRET_KEY=$(gcloud secrets versions access latest --secret=SESSION_SECRET_KEY --format='value(payload.data)')",
-    ]
+      - "auth"
+      - "configure-docker"
+      - "asia-southeast2-docker.pkg.dev"
 
-
-  #setup docker
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    entrypoint: "gcloud"
-    args: ["auth", "configure-docker", "asia-southeast2-docker.pkg.dev"]
-  #build image
+  # Build image
   - name: "gcr.io/cloud-builders/docker"
     args:
-      [
-        "build",
-        "-t",
-        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
-        ".",
-      ]
-  #push image
+      - "build"
+      - "-t"
+      - "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0"
+      - "."
+
+  # Push image
   - name: "gcr.io/cloud-builders/docker"
     args:
-      [
-        "push",
-        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
-      ]
+      - "push"
+      - "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0"
 
-  #deploy image
+  # Deploy image
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "gcloud"
     args:
-      [
-        "run",
-        "deploy",
-        "ready2eat-backend",
-        "--image=asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
-        "--allow-unauthenticated",
-        "--port=8000",
-        "--service-account=572216952553-compute@developer.gserviceaccount.com",
-        "--cpu=2",
-        "--max-instances=10",
-        "--set-cloudsql-instances=c23-pc660-ready2eat:asia-southeast2:ready2eat-db",
-        "--vpc-connector=projects/c23-pc660-ready2eat/locations/asia-southeast2/connectors/ready2eat-vpc-access",
-        "--region=asia-southeast2",
-        "--project=c23-pc660-ready2eat",
-      ]
+      - "run"
+      - "deploy"
+      - "ready2eat-backend"
+      - "--image=asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0"
+      - "--allow-unauthenticated"
+      - "--port=8000"
+      - "--service-account=572216952553-compute@developer.gserviceaccount.com"
+      - "--cpu=2"
+      - "--max-instances=10"
+      - "--set-cloudsql-instances=c23-pc660-ready2eat:asia-southeast2:ready2eat-db"
+      - "--vpc-connector=projects/c23-pc660-ready2eat/locations/asia-southeast2/connectors/ready2eat-vpc-access"
+      - "--region=asia-southeast2"
+      - "--project=c23-pc660-ready2eat"
