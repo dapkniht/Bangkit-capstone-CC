@@ -9,7 +9,7 @@ steps:
       [
         "build",
         "-t",
-        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image:1.0",
+        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
         ".",
       ]
   #push image
