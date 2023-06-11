@@ -18,25 +18,33 @@ steps:
     args: ["auth", "configure-docker", "asia-southeast2-docker.pkg.dev"]
   #build image
   - name: "gcr.io/cloud-builders/docker"
+    substitutions:
+    _DB_HOST: "$DB_HOST"
+    _DB_NAME: "$DB_NAME"
+    _DB_PASSWORD: "$DB_PASSWORD"
+    _DB_USERNAME: "$DB_USERNAME"
+    _PROJECT_ID: "$PROJECT_ID"
+    _SECRET_KEY: "$SECRET_KEY"
+    _SESSION_SECRET_KEY: "$SESSION_SECRET_KEY"
     args:
       [
         "build",
         "-t",
         "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
         "--build-arg",
-        "DB_HOST=$DB_HOST",
+        "DB_HOST=$_DB_HOST",
         "--build-arg",
-        "DB_NAME=$DB_NAME",
+        "DB_NAME=$_DB_NAME",
         "--build-arg",
-        "DB_PASSWORD=$DB_PASSWORD",
+        "DB_PASSWORD=$_DB_PASSWORD",
         "--build-arg",
-        "DB_USERNAME=$DB_USERNAME",
+        "DB_USERNAME=$_DB_USERNAME",
         "--build-arg",
-        "PROJECT_ID=$PROJECT_ID",
+        "PROJECT_ID=$_PROJECT_ID",
         "--build-arg",
-        "SECRET_KEY=$SECRET_KEY",
+        "SECRET_KEY=$_SECRET_KEY",
         "--build-arg",
-        "SESSION_SECRET_KEY=$SESSION_SECRET_KEY",
+        "SESSION_SECRET_KEY=$_SESSION_SECRET_KEY",
         ".",
       ]
   #push image
@@ -67,12 +75,5 @@ steps:
         "--project=c23-pc660-ready2eat",
       ]
 
-substitutions:
-  _DB_HOST: "$DB_HOST"
-  _DB_NAME: "$DB_NAME"
-  _DB_PASSWORD: "$DB_PASSWORD"
-  _DB_USERNAME: "$DB_USERNAME"
-  _PROJECT_ID: "$PROJECT_ID"
-  _SECRET_KEY: "$SECRET_KEY"
-  _SESSION_SECRET_KEY: "$SESSION_SECRET_KEY"
+
 
