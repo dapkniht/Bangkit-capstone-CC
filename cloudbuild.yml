@@ -1,0 +1,68 @@
+steps:
+  #setup docker
+  - name: "gcr.io/google.com/cloudsdktool/cloudsdk"
+    entrypoint: "gcloud"
+    args: ["auth", "configure-docker", "asia-southeast2-docker.pkg.dev"]
+  #build image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image:1.0",
+        ".",
+      ]
+  #push image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image:1.0",
+      ]
+  #deploy image
+  - name: "gcr.io/google.com/cloudsdktool/cloudsdk"
+    entrypoint: "gcloud"
+    args:
+      [
+        "run",
+        "deploy",
+        "ready2eat-backend",
+        "--image=asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image:1.0",
+        "--allow-unauthenticated",
+        "--port=8000",
+        "--service-account=572216952553-compute@developer.gserviceaccount.com",
+        "--cpu=2",
+        "--max-instances=10",
+        "--set-env-vars=DB_HOST=$DB_HOST, DB_NAME=$DB_NAME, DB_PASSWORD=$DB_PASSWORD, DB_USERNAME=$DB_USERNAME, PROJECT_ID=$PROJECT_ID, SECRET_KEY=$SECRET_KEY, SESSION_SECRET_KEY=$SESSION_SECRET_KEY",
+        "--set-cloudsql-instances=c23-pc660-ready2eat:asia-southeast2:ready2eat-db",
+        "--vpc-connector=projects/c23-pc660-ready2eat/locations/asia-southeast2/connectors/ready2eat-vpc-access",
+        "--region=asia-southeast2",
+        "--project=c23-pc660-ready2eat",
+      ]
+    secretEnv:
+      [
+        "DB_HOST",
+        "DB_NAME",
+        "DB_PASSWORD",
+        "DB_USERNAME",
+        "PROJECT_ID",
+        "SECRET_KEY",
+        "SESSION_SECRET_KEY",
+      ]
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/572216952553/secrets/DB_HOST
+      env: "DB_HOST"
+    - versionName: projects/572216952553/secrets/DB_NAME
+      env: "DB_NAME"
+    - versionName: projects/572216952553/secrets/DB_PASSWORD
+      env: "DB_PASSWORD"
+    - versionName: projects/572216952553/secrets/DB_USERNAME
+      env: "DB_USERNAME"
+    - versionName: projects/572216952553/secrets/PROJECT_ID
+      env: "PROJECT_ID"
+    - versionName: projects/572216952553/secrets/SECRET_KEY
+      env: "SECRET_KEY"
+    - versionName: projects/572216952553/secrets/SESSION_SECRET_KEY
+      env: "SESSION_SECRET_KEY"
