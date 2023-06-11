@@ -33,7 +33,7 @@ steps:
         "--service-account=572216952553-compute@developer.gserviceaccount.com",
         "--cpu=2",
         "--max-instances=10",
-        "--set-env-vars=DB_HOST=$DB_HOST, DB_NAME=$DB_NAME, DB_PASSWORD=$DB_PASSWORD, DB_USERNAME=$DB_USERNAME, PROJECT_ID=$PROJECT_ID, SECRET_KEY=$SECRET_KEY, SESSION_SECRET_KEY=$SESSION_SECRET_KEY",
+        "--set-env-vars=DB_HOST=$$DB_HOST, DB_NAME=$$DB_NAME, DB_PASSWORD=$$DB_PASSWORD, DB_USERNAME=$$DB_USERNAME, PROJECT_ID=$$PROJECT_ID, SECRET_KEY=$$SECRET_KEY, SESSION_SECRET_KEY=$$SESSION_SECRET_KEY",
         "--set-cloudsql-instances=c23-pc660-ready2eat:asia-southeast2:ready2eat-db",
         "--vpc-connector=projects/c23-pc660-ready2eat/locations/asia-southeast2/connectors/ready2eat-vpc-access",
         "--region=asia-southeast2",
