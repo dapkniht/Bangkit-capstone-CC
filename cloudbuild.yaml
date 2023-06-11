@@ -5,13 +5,14 @@ steps:
     args:
       - "-c"
       - |
-        export DB_HOST=$(gcloud secrets versions access latest --secret=DB_HOST --format='value(payload.data)')
-        export DB_NAME=$(gcloud secrets versions access latest --secret=DB_NAME --format='value(payload.data)')
-        export DB_PASSWORD=$(gcloud secrets versions access latest --secret=DB_PASSWORD --format='value(payload.data)')
-        export DB_USERNAME=$(gcloud secrets versions access latest --secret=DB_USERNAME --format='value(payload.data)')
-        export PROJECT_ID=$(gcloud secrets versions access latest --secret=PROJECT_ID --format='value(payload.data)')
-        export SECRET_KEY=$(gcloud secrets versions access latest --secret=SECRET_KEY --format='value(payload.data)')
-        export SESSION_SECRET_KEY=$(gcloud secrets versions access latest --secret=SESSION_SECRET_KEY --format='value(payload.data)')
+        gcloud secrets versions access latest --secret=DB_HOST --format='value(payload.data)' > db_host.txt
+        gcloud secrets versions access latest --secret=DB_NAME --format='value(payload.data)' > db_name.txt
+        gcloud secrets versions access latest --secret=DB_PASSWORD --format='value(payload.data)' > db_password.txt
+        gcloud secrets versions access latest --secret=DB_USERNAME --format='value(payload.data)' > db_username.txt
+        gcloud secrets versions access latest --secret=PROJECT_ID --format='value(payload.data)' > project_id.txt
+        gcloud secrets versions access latest --secret=SECRET_KEY --format='value(payload.data)' > secret_key.txt
+        gcloud secrets versions access latest --secret=SESSION_SECRET_KEY --format='value(payload.data)' > session_secret_key.txt
+
   #setup docker
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: "gcloud"
@@ -19,26 +20,25 @@ steps:
   #build image
   - name: "gcr.io/cloud-builders/docker"
     args:
-      [
-        "build",
-        "-t",
-        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
-        "--build-arg",
-        "DB_HOST=$(echo $DB_HOST)",
-        "--build-arg",
-        "DB_NAME=$(echo $DB_NAME)",
-        "--build-arg",
-        "DB_PASSWORD=$(echo $DB_PASSWORD)",
-        "--build-arg",
-        "DB_USERNAME=$(echo $DB_USERNAME)",
-        "--build-arg",
-        "PROJECT_ID=$(echo $PROJECT_ID)",
-        "--build-arg",
-        "SECRET_KEY=$(echo $SECRET_KEY)",
-        "--build-arg",
-        "SESSION_SECRET_KEY=$(echo $SESSION_SECRET_KEY)",
-        ".",
-      ]
+      - "build"
+      - "-t"
+      - "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0"
+      - "--build-arg"
+      - "DB_HOST=$(cat db_host.txt)"
+      - "--build-arg"
+      - "DB_NAME=$(cat db_name.txt)"
+      - "--build-arg"
+      - "DB_PASSWORD=$(cat db_password.txt)"
+      - "--build-arg"
+      - "DB_USERNAME=$(cat db_username.txt)"
+      - "--build-arg"
+      - "PROJECT_ID=$(cat project_id.txt)"
+      - "--build-arg"
+      - "SECRET_KEY=$(cat secret_key.txt)"
+      - "--build-arg"
+      - "SESSION_SECRET_KEY=$(cat session_secret_key.txt)"
+      - "."
+
   #push image
   - name: "gcr.io/cloud-builders/docker"
     args:
@@ -66,6 +66,3 @@ steps:
         "--region=asia-southeast2",
         "--project=c23-pc660-ready2eat",
       ]
-
-
-
