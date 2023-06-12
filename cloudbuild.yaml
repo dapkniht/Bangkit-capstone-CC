@@ -39,18 +39,5 @@ steps:
     args:
       [
         "-c",
-        "gcloud run",
-        "deploy",
-        "ready2eat-backend",
-        "--image=asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0",
-        "--allow-unauthenticated",
-        "--port=8000",
-        "--service-account=572216952553-compute@developer.gserviceaccount.com",
-        "--cpu=2",
-        "--max-instances=10",
-        "--set-cloudsql-instances=c23-pc660-ready2eat:asia-southeast2:ready2eat-db",
-        "--set-env-vars=DB_HOST=$(cat db_host.txt), DB_NAME=$(cat db_name.txt), DB_PASSWORD=$(cat db_password.txt), DB_USERNAME=$(cat db_username.txt), PROJECT_ID=$(cat project_id.txt), SECRET_KEY=$(cat secret_key.txt), SESSION_SECRET_KEY=$(cat session_secret_key.txt)",
-        "--vpc-connector=projects/c23-pc660-ready2eat/locations/asia-southeast2/connectors/ready2eat-vpc-access",
-        "--region=asia-southeast2",
-        "--project=c23-pc660-ready2eat",
+         "gcloud run deploy ready2eat-backend --image=asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-image/image:1.0 --allow-unauthenticated --port=8000 --service-account=572216952553-compute@developer.gserviceaccount.com --cpu=2 --max-instances=10 --add-cloudsql-instances=c23-pc660-ready2eat:asia-southeast2:ready2eat-db --set-env-vars=DB_HOST=$(cat db_host.txt),DB_NAME=$(cat db_name.txt),DB_PASSWORD=$(cat db_password.txt),DB_USERNAME=$(cat db_username.txt),PROJECT_ID=$(cat project_id.txt),SECRET_KEY=$(cat secret_key.txt),SESSION_SECRET_KEY=$(cat session_secret_key.txt) --vpc-connector=projects/c23-pc660-ready2eat/locations/asia-southeast2/connectors/ready2eat-vpc-access --region=asia-southeast2 --project=c23-pc660-ready2eat"
       ]
