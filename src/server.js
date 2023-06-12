@@ -39,7 +39,6 @@ server.use("/admin", adminRoutes);
 server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 server.get("/", (req, res) => {
-  console.log(process.env.DB_HOST)
   res.redirect("/api-docs");
 });
 
