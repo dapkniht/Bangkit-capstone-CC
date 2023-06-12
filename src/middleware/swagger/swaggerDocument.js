@@ -9,7 +9,7 @@ const swaggerDocument = {
     description: "Capstone project Bangkit Academy 2023: C23-PC660 Ready2Eat",
     version: "1.0.0",
   },
-  servers: [{ url: "https://localhost:8000" }],
+  servers: [{ url: "https://ready2eat-backend-kkszfyhisa-et.a.run.app" }],
   tags: [
     {
       name: "User",
