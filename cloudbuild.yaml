@@ -34,7 +34,7 @@ steps:
       ]
 
   #deploy image
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  - name: "gcr.io/cloud-builders/gcloud"
     entrypoint: "bash"
     args:
       [
