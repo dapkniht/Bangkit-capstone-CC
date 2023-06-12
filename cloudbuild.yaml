@@ -35,9 +35,11 @@ steps:
 
   #deploy image
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    entrypoint: "gcloud"
+    entrypoint: "bash"
     args:
       [
+        "-c",
+        "gcloud",
         "run",
         "deploy",
         "ready2eat-backend",
