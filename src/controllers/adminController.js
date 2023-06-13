@@ -110,7 +110,7 @@ adminController.addNewFruit = async (req, res) => {
         .json({ message: "fruit data has been added to the database" });
 
     const id = nanoid(10);
-    const imageUrl = await imageToBucket(req.file.filename, "test12233");
+    const imageUrl = await imageToBucket(req.file.filename, "ready2eat-bucket");
     if (imageUrl instanceof Error) throw new Error(imageUrl.message);
     const addFruit = await Fruit.create({ id, ...req.body, image: imageUrl });
     fs.unlinkSync(req.file.path);
