@@ -7,7 +7,7 @@ const userController = {};
 
 userController.predict = async (req, res) => {
   try {
-    const upload = await imageToBucket(req.file.filename, "test12233");
+    const upload = await imageToBucket(req.file.filename, "ready2eat-predict-bucket");
     console.log(upload);
     res.send("under development");
   } catch (error) {
