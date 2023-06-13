@@ -1,10 +1,7 @@
 const { Storage } = require("@google-cloud/storage");
 const os = require("os");
 
-const storage = new Storage({
-  keyFilename: "./bucket-service-key.json",
-  projectId: process.env.PROJECT_ID,
-});
+const storage = new Storage();
 
 const imageToBucket = (filename, bucketName) => {
   const uploadedImage = storage
