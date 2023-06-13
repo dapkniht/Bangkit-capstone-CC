@@ -38,7 +38,7 @@ userController.getFruitById = async (req, res) => {
   try {
     if (fruit == null)
       return res.status(404).json({ message: "Fruit id not found" });
-    return res.status(200).json({ message: "Success", data: { ...fruit } });
+    return res.status(200).json({ message: "Success", data: { ...fruit.dataValues } });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
