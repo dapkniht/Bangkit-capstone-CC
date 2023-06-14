@@ -2,14 +2,30 @@ const Fruit = require("../models/Fruit");
 const fs = require("fs");
 const { Op } = require("sequelize");
 const imageToBucket = require("../modules/imageToBucket");
+const axios = require("axios");
 
 const userController = {};
 
 userController.predict = async (req, res) => {
   try {
-    const upload = await imageToBucket(req.file.filename, "ready2eat-predict-bucket");
-    console.log(upload);
-    res.send("under development");
+    const image_url = await imageToBucket(
+      req.file.filename,
+      "ready2eat-predict-bucket"
+    );
+    const response = await axios.post(
+      "https://ml-service-kkszfyhisa-et.a.run.app/predict",
+      {
+        url: image_url,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.data.error) throw new Error(response.data.error);
+    res.status(200).json({ message: "Success", data: response.data });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -38,7 +54,9 @@ userController.getFruitById = async (req, res) => {
   try {
     if (fruit == null)
       return res.status(404).json({ message: "Fruit id not found" });
-    return res.status(200).json({ message: "Success", data: { ...fruit.dataValues } });
+    return res
+      .status(200)
+      .json({ message: "Success", data: { ...fruit.dataValues } });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
