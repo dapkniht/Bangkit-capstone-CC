@@ -1,0 +1,5 @@
+Flask
+tensorflow
+numpy
+urllib3
+Pillow
