@@ -81,6 +81,13 @@ userDocumentation.paths = {
       responses: {
         200: {
           message: "Success",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/predict",
+              },
+            },
+          },
         },
       },
     },
@@ -141,6 +148,24 @@ userDocumentation.schemas = {
             vitamin_b12: "0 µg",
           },
         },
+      },
+    },
+  },
+  predict: {
+    type: "object",
+    properties: {
+      message: {
+        type: "string",
+        example: "Success",
+      },
+      data: {
+        type: "array",
+        example: [
+          {
+            fruit: "banana",
+            predict: "rotten",
+          },
+        ],
       },
     },
   },
