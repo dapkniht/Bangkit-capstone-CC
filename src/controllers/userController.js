@@ -7,6 +7,12 @@ const axios = require("axios");
 const userController = {};
 
 userController.predict = async (req, res) => {
+  if (req.file === undefined || !req.file.isimage)
+    return res
+      .status(400)
+      .json({
+        message: "Only accept image file types with png, jpg, or jpeg types",
+      });
   try {
     const image_url = await imageToBucket(
       req.file.filename,

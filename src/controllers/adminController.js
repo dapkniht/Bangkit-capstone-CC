@@ -99,7 +99,11 @@ adminController.editAdminData = async (req, res) => {
 //Add new fruit
 adminController.addNewFruit = async (req, res) => {
   if (req.file === undefined || !req.file.isimage)
-    return res.status(400).json({ message: "Only accepts image file types" });
+    return res
+      .status(400)
+      .json({
+        message: "Only accept image file types with png, jpg, or jpeg types",
+      });
   try {
     const isAdded = await Fruit.findOne({
       where: { name: req.body.name },
