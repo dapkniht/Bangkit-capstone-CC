@@ -1,0 +1,30 @@
+steps:
+
+  #setup docker
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "gcloud"
+    args: ["auth", "configure-docker", "asia-southeast2-docker.pkg.dev"]
+  #build image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-ml-image/image:1.0"
+      - "."
+
+  #push image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-ml-image/image:1.0",
+      ]
+
+  #deploy image
+  - name: "gcr.io/cloud-builders/gcloud"
+    entrypoint: "bash"
+    args:
+      [
+        "-c",
+         "gcloud run deploy ml-service --image=asia-southeast2-docker.pkg.dev/c23-pc660-ready2eat/ready2eat-ml-image/image:1.0 --allow-unauthenticated --service-account=572216952553-compute@developer.gserviceaccount.com --cpu=4 --memory=8Gi --max-instances=10 --region=asia-southeast2 --project=c23-pc660-ready2eat"
+      ]
