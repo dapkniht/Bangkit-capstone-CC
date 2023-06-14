@@ -11,6 +11,7 @@ const imageToBucket = (filename, bucketName) => {
       overwrite: true,
     })
     .then(() => {
+      filename = filename.replace(/ /g, "%20");
       return `https://storage.googleapis.com/${bucketName}/${filename}`;
     })
     .catch((error) => {
