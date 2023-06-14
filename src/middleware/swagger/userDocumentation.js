@@ -61,7 +61,7 @@ userDocumentation.paths = {
   "/user/predict": {
     post: {
       tags: ["User"],
-      summary: "prediction of fruit ripeness from images (Under Development)",
+      summary: "prediction of fruit ripeness from images",
       requestBody: {
         content: {
           "multipart/form-data": {
