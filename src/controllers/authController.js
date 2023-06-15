@@ -53,13 +53,9 @@ authController.login = async (req, res) => {
       let accessToken;
       if (user.role == "user") {
         const { id, email, role } = user;
-        accessToken = jwt.sign(
-          { id, name, email, role },
-          process.env.SECRET_KEY,
-          {
-            expiresIn: "1d",
-          }
-        );
+        accessToken = jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
+          expiresIn: "30d",
+        });
         req.session.token = { token: accessToken };
         return res
           .status(200)
