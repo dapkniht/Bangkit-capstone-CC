@@ -1,18 +1,19 @@
 const Fruit = require("../models/Fruit");
+const History = require("../models/History");
 const fs = require("fs");
 const { Op } = require("sequelize");
 const imageToBucket = require("../modules/imageToBucket");
 const axios = require("axios");
+const { nanoid } = require("nanoid");
+const jwt = require("jsonwebtoken");
 
 const userController = {};
 
 userController.predict = async (req, res) => {
   if (req.file === undefined || !req.file.isimage)
-    return res
-      .status(400)
-      .json({
-        message: "Only accept image file types with png, jpg, or jpeg types",
-      });
+    return res.status(400).json({
+      message: "Only accept image file types with png, jpg, or jpeg types",
+    });
   try {
     const image_url = await imageToBucket(
       req.file.filename,
@@ -31,6 +32,17 @@ userController.predict = async (req, res) => {
     );
 
     if (response.data.error) throw new Error(response.data.error);
+
+    const id = nanoid(10);
+    const user = jwt.decode(req.session.token.token);
+    await History.create({
+      id: id,
+      user_id: user.id,
+      fruit: response.data.fruit,
+      predict: response.data.fruit,
+      image: image_url,
+    });
+
     res.status(200).json({ message: "Success", data: response.data });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -63,6 +75,18 @@ userController.getFruitById = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Success", data: { ...fruit.dataValues } });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+userController.history = async (req, res) => {
+  const { id } = jwt.decode(req.session.token.token);
+  try {
+    const history = await History.findAll({
+      where: { user_id: id },
+    });
+    return res.status(200).json({ message: "Success", data: history });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

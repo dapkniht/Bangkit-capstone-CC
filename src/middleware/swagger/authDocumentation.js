@@ -109,14 +109,12 @@ authDocumentation.schemas = {
       },
       data: {
         type: "array",
-        example: [
-          {
-            id: "2lnokG3l20",
-            email: "JohnDoe@gmail.com",
-            password:
-              "$2b$10$T4/KpTRX4RwIGxK3blJRluPxiwBzdFxcR7Yyw8moQn3/mPLcnGIsO",
-          },
-        ],
+        example: {
+          id: "2lnokG3l20",
+          email: "JohnDoe@gmail.com",
+          password:
+            "$2b$10$T4/KpTRX4RwIGxK3blJRluPxiwBzdFxcR7Yyw8moQn3/mPLcnGIsO",
+        },
       },
     },
   },

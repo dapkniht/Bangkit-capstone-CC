@@ -107,6 +107,29 @@ userDocumentation.paths = {
       },
     },
   },
+  "/user/history": {
+    get: {
+      tags: ["User"],
+      summary: "get all fruit prediction results",
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
+      responses: {
+        200: {
+          message: "Success",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/history",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 userDocumentation.schemas = {
@@ -175,10 +198,30 @@ userDocumentation.schemas = {
       },
       data: {
         type: "array",
+        example: {
+          fruit: "banana",
+          predict: "rotten",
+        },
+      },
+    },
+  },
+  history: {
+    type: "object",
+    properties: {
+      message: {
+        type: "string",
+        example: "Success",
+      },
+      data: {
+        type: "array",
         example: [
           {
-            fruit: "banana",
-            predict: "rotten",
+            id: "kSew3Xse42",
+            user_id: "msdEW4fer2",
+            name: "Apple",
+            predict: "fresh",
+            image:
+              "https://storage.googleapis.com/ready2eat-bucket/apple_158989157.jpg",
           },
         ],
       },
