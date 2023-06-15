@@ -22,4 +22,18 @@ userRoutes.get("/fruits/:id", verifyToken, userController.getFruitById);
 //Get predicted fruit history
 userRoutes.get("/history", verifyToken, userController.getHistory);
 
+//Delete all History
+userRoutes.delete(
+  "/history/delete",
+  verifyToken,
+  userController.deleteAllHistory
+);
+
+//Delete History By Id
+userRoutes.delete(
+  "/history/delete/:id",
+  verifyToken,
+  userController.deleteHistoryById
+);
+
 module.exports = userRoutes;

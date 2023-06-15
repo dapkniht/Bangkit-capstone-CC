@@ -92,4 +92,44 @@ userController.getHistory = async (req, res) => {
   }
 };
 
+userController.deleteAllHistory = async (req, res) => {
+  const { id } = jwt.decode(req.session.token.token);
+  try {
+    const history = await History.findAll({
+      where: { user_id: id },
+    });
+
+    await History.destroy({
+      where: {
+        user_id: id,
+      },
+    });
+    return res
+      .status(200)
+      .json({ message: "Success delete all history", data: history });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+userController.deleteHistoryById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const history = await History.findByPk(id);
+
+    const deleteHistory = await History.destroy({
+      where: {
+        id,
+      },
+    });
+    if (deleteHistory == 0)
+      return res.status(404).json({ message: "History id not found" });
+    return res
+      .status(200)
+      .json({ message: "Success delete history", data: history });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = userController;
