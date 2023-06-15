@@ -80,7 +80,7 @@ userController.getFruitById = async (req, res) => {
   }
 };
 
-userController.history = async (req, res) => {
+userController.getHistory = async (req, res) => {
   const { id } = jwt.decode(req.session.token.token);
   try {
     const history = await History.findAll({
