@@ -7,6 +7,7 @@ const verifyToken = async (req, res, next) => {
   if (token == null)
     return res.status(401).json({ message: "You must be logged in" });
 
+  console.log(req.headers["authorization"]);
   if (!req.headers["authorization"]) {
     return res.status(404).json({ message: "Access token not found" });
   }
