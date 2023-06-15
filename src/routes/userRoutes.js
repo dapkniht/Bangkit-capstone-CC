@@ -20,6 +20,6 @@ userRoutes.get("/fruits", verifyToken, userController.getAllFruits);
 userRoutes.get("/fruits/:id", verifyToken, userController.getFruitById);
 
 //Get predicted fruit history
-// userRoutes.get("/history", verifyToken, userController.getHistory);
+userRoutes.get("/history", verifyToken, userController.getHistory);
 
 module.exports = userRoutes;
