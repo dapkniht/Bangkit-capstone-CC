@@ -3,7 +3,7 @@ const Session = require("../models/Session");
 
 const verifyToken = async (req, res, next) => {
   const token = await Session.findByPk(req.sessionID);
-  console.log(token);
+  console.log(req.session.cookie);
 
   if (token == null)
     return res.status(401).json({ message: "You must be logged in" });
