@@ -130,6 +130,29 @@ userDocumentation.paths = {
       },
     },
   },
+  "/user/history/delete": {
+    delete: {
+      tags: ["User"],
+      summary: "delete all fruit prediction results",
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
+      responses: {
+        200: {
+          message: "Success",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/history",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 };
 
 userDocumentation.schemas = {
