@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const verifyRole = (userRole) => {
   return (req, res, next) => {
     try {
-      const { role } = jwt.decode(req.session.token.token);
+      const { role } = jwt.decode(req.token);
       if (role != userRole) throw new Error("unauthorized");
       next();
     } catch (error) {
