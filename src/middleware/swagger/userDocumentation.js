@@ -145,7 +145,42 @@ userDocumentation.paths = {
           content: {
             "application/json": {
               schema: {
-                $ref: "#/components/schemas/history",
+                $ref: "#/components/schemas/deleteallhistory",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/user/history/delete/{id}": {
+    delete: {
+      tags: ["User"],
+      summary: "delete fruit prediction result by id",
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
+      parameters: [
+        {
+          in: "path",
+          name: "id",
+          description:
+            "id of the ruit prediction result that wants to be deleted",
+          required: true,
+          schema: {
+            type: "string",
+          },
+        },
+      ],
+      responses: {
+        200: {
+          message: "Success",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/deletehistorybyid",
               },
             },
           },
@@ -245,6 +280,50 @@ userDocumentation.schemas = {
             predict: "fresh",
             image:
               "https://storage.googleapis.com/ready2eat-bucket/apple_158989157.jpg",
+          },
+        ],
+      },
+    },
+  },
+  deleteallhistory: {
+    type: "object",
+    properties: {
+      message: {
+        type: "string",
+        example: "Success",
+      },
+      data: {
+        type: "array",
+        example: [
+          {
+            id: "6DiZb6YNZv",
+            user_id: "3Kg0zz_6tf",
+            fruit: "banana",
+            predict: "fresh",
+            image:
+              "https://storage.googleapis.com/ready2eat-predict-bucket/1686831172295-274913498-banana.jpg",
+          },
+        ],
+      },
+    },
+  },
+  deletehistorybyid: {
+    type: "object",
+    properties: {
+      message: {
+        type: "string",
+        example: "Success",
+      },
+      data: {
+        type: "array",
+        example: [
+          {
+            id: "6DiZb6YNZv",
+            user_id: "3Kg0zz_6tf",
+            fruit: "banana",
+            predict: "fresh",
+            image:
+              "https://storage.googleapis.com/ready2eat-predict-bucket/1686831172295-274913498-banana.jpg",
           },
         ],
       },
