@@ -2,6 +2,29 @@ const Joi = require("joi");
 
 const validator = {};
 
+validator.register = (req, res, next) => {
+  const { email, password } = req.body;
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string()
+      .min(8)
+      .pattern(/^(?=.*[A-Z])(?=.*\d).+$/)
+      .messages({
+        "string.pattern.base":
+          "Passwords must have at least one uppercase letter and one number",
+      })
+      .required(),
+  });
+
+  const { error } = schema.validate({ email, password });
+  if (error) {
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
+  }
+  next();
+};
+
 validator.login = (req, res, next) => {
   const { email, password } = req.body;
   const schema = Joi.object({

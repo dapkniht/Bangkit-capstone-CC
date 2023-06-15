@@ -5,6 +5,30 @@ const Session = require("../models/Session");
 
 const authController = {};
 
+authController.register = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const isAdded = await User.findOne({
+      where: { email },
+    });
+    if (isAdded)
+      return res.status(409).json({ message: "user has been registered" });
+
+    const id = nanoid(10);
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    const addUser = await User.create({
+      id,
+      email,
+      password: hash,
+      role: "user",
+    });
+    return res.status(201).json({ message: "Success add user", data: addUser });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 authController.login = async (req, res) => {
   const { email, password } = req.body;
   try {
