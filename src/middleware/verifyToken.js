@@ -2,13 +2,13 @@ const jwt = require("jsonwebtoken");
 const Session = require("../models/Session");
 
 const verifyToken = async (req, res, next) => {
-  const token = await Session.findByPk(req.sessionID);
-  console.log(req.session.cookie);
+  const token = await Session.findOne({
+    where: sequelize.literal('data->>"$.token.token" = :tokenValue'),
+    replacements: { tokenValue: req.session.token.token },
+  });
 
-  if (token == null)
-    return res.status(401).json({ message: "You must be logged in" });
+  if (!token) return res.status(401).json({ message: "You must be logged in" });
 
-  console.log(req.headers["authorization"]);
   if (!req.headers["authorization"]) {
     return res.status(404).json({ message: "Access token not found" });
   }
