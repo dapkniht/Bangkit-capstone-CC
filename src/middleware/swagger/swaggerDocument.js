@@ -14,7 +14,7 @@ const swaggerDocument = {
     {
       name: "User",
       description:
-        "to obtain information about the fruit and predict the ripeness level of the fruit",
+        "to obtain information about the fruit and predict the ripeness level of the fruit (Required access token)",
     },
     {
       name: "Auth",

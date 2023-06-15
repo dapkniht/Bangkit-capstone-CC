@@ -39,7 +39,7 @@ userController.predict = async (req, res) => {
       id: id,
       user_id: user.id,
       fruit: response.data.fruit,
-      predict: response.data.fruit,
+      predict: response.data.predict,
       image: image_url,
     });
 
