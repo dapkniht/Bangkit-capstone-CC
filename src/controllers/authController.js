@@ -34,17 +34,6 @@ authController.register = async (req, res) => {
 authController.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const session = await Session.findOne({
-      where: db.literal('data->>"$.token.token" = :tokenValue'),
-      replacements: { tokenValue: accessToken },
-    });
-
-    if (session)
-      return res.status(200).json({
-        message: "You are already logged in",
-        data: { acessToken: session.data.token.token },
-      });
-
     const user = await User.findOne({
       where: { email },
     });
