@@ -2,17 +2,17 @@ const fs = require("fs");
 const { nanoid } = require("nanoid");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const Admin = require("../models/Admin");
+const User = require("../models/User");
 const Fruit = require("../models/Fruit");
 const imageToBucket = require("../modules/imageToBucket");
 
 const adminController = {};
 
-//get all admin data
-adminController.getAllAdmin = async (req, res) => {
+//get all user data
+adminController.getAllUser = async (req, res) => {
   try {
-    const admins = await Admin.findAll();
-    return res.status(200).json({ message: "Success", data: admins });
+    const users = await User.findAll();
+    return res.status(200).json({ message: "Success", data: users });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -22,7 +22,7 @@ adminController.getAllAdmin = async (req, res) => {
 adminController.addNewAdmin = async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    const isAdded = await Admin.findOne({
+    const isAdded = await User.findOne({
       where: { email },
     });
     if (isAdded)
@@ -31,7 +31,13 @@ adminController.addNewAdmin = async (req, res) => {
     const id = nanoid(10);
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    const addAdmin = await Admin.create({ id, name, email, password: hash });
+    const addAdmin = await User.create({
+      id,
+      name,
+      email,
+      password: hash,
+      role: "admin",
+    });
     return res
       .status(201)
       .json({ message: "Success add admin", data: addAdmin });
@@ -40,22 +46,20 @@ adminController.addNewAdmin = async (req, res) => {
   }
 };
 
-//delete admin by id
-adminController.deleteAdminById = async (req, res) => {
+//delete user by id
+adminController.deleteUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const admin = await Admin.findByPk(id);
+    const user = await User.findByPk(id);
 
-    const deleteAdmin = await Admin.destroy({
+    const deleteUser = await User.destroy({
       where: {
         id,
       },
     });
-    if (deleteAdmin == 0)
-      return res.status(404).json({ message: "Admin id not found" });
-    return res
-      .status(200)
-      .json({ message: "Success delete admin", data: admin });
+    if (deleteUser == 0)
+      return res.status(404).json({ message: "User id not found" });
+    return res.status(200).json({ message: "Success delete user", data: user });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -66,7 +70,7 @@ adminController.editAdminData = async (req, res) => {
   try {
     const { id } = jwt.decode(req.token);
     console.log(id);
-    const admin = await Admin.findByPk(id);
+    const admin = await User.findByPk(id);
     if (req.body.password) {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(req.body.password, salt);
@@ -74,12 +78,12 @@ adminController.editAdminData = async (req, res) => {
     }
 
     const {
-      name = admin.name,
-      email = admin.email,
-      password = admin.password,
+      name = User.name,
+      email = User.email,
+      password = User.password,
     } = req.body;
 
-    const editAdmin = await Admin.update(
+    const editAdmin = await User.update(
       { name, email, password },
       {
         where: {
@@ -99,11 +103,9 @@ adminController.editAdminData = async (req, res) => {
 //Add new fruit
 adminController.addNewFruit = async (req, res) => {
   if (req.file === undefined || !req.file.isimage)
-    return res
-      .status(400)
-      .json({
-        message: "Only accept image file types with png, jpg, or jpeg types",
-      });
+    return res.status(400).json({
+      message: "Only accept image file types with png, jpg, or jpeg types",
+    });
   try {
     const isAdded = await Fruit.findOne({
       where: { name: req.body.name },

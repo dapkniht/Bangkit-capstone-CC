@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const Admin = require("../models/Admin");
+const User = require("../models/User");
 const Session = require("../models/Session");
 
 const authController = {};
@@ -15,19 +15,19 @@ authController.login = async (req, res) => {
         data: { acessToken: req.session.token.token },
       });
 
-    const admin = await Admin.findOne({
+    const user = await User.findOne({
       where: { email },
     });
-    if (admin == null) return res.status(401).json({ message: "Wrong email" });
+    if (user == null) return res.status(401).json({ message: "Wrong email" });
 
-    const isPasswordMatch = bcrypt.compareSync(password, admin.password);
+    const isPasswordMatch = bcrypt.compareSync(password, user.password);
 
     if (!isPasswordMatch) {
       return res.status(401).json({ message: "Wrong password" });
     } else {
-      const { id, name, email } = admin;
+      const { id, name, email, role } = user;
       const accessToken = jwt.sign(
-        { id, name, email },
+        { id, name, email, role },
         process.env.SECRET_KEY,
         {
           expiresIn: "1d",

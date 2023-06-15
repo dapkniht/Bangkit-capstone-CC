@@ -6,11 +6,11 @@ const multer = require("../middleware/multer");
 
 const adminRoutes = express.Router();
 
-//Get all admin
-adminRoutes.get("/admins", verifyToken, adminController.getAllAdmin);
+//Get all user
+adminRoutes.get("/admins", verifyToken, adminController.getAllUser);
 
-//Delete admin by id
-adminRoutes.delete("/delete/:id", verifyToken, adminController.deleteAdminById);
+//Delete user by id
+adminRoutes.delete("/delete/:id", verifyToken, adminController.deleteUserById);
 
 //Add new admin
 adminRoutes.post(

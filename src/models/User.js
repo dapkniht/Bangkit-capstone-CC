@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const db = require("../config/db");
 
-const Admin = db.define(
-  "admin",
+const User = db.define(
+  "user",
   {
     id: {
       type: DataTypes.STRING,
@@ -11,7 +11,7 @@ const Admin = db.define(
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -22,6 +22,10 @@ const Admin = db.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     freezeTableName: true,
@@ -29,4 +33,4 @@ const Admin = db.define(
   }
 );
 
-module.exports = Admin;
+module.exports = User;
