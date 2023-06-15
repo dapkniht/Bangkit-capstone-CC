@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const { nanoid } = require("nanoid");
 const User = require("../models/User");
 const Session = require("../models/Session");
+const db = require("../config/db");
 
 const authController = {};
 
