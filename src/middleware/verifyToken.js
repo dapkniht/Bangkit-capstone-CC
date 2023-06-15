@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const Session = require("../models/Session");
+const db = require("../config/db");
 
 const verifyToken = async (req, res, next) => {
   const token = await Session.findOne({
-    where: sequelize.literal('data->>"$.token.token" = :tokenValue'),
+    where: db.literal('data->>"$.token.token" = :tokenValue'),
     replacements: { tokenValue: req.session.token.token },
   });
 
