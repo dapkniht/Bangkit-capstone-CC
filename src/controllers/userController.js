@@ -81,7 +81,7 @@ userController.getFruitById = async (req, res) => {
 };
 
 userController.getHistory = async (req, res) => {
-  const { id } = jwt.decode(req.session.token.token);
+  const { id } = jwt.decode(req.token);
   try {
     const history = await History.findAll({
       where: { user_id: id },
@@ -93,7 +93,7 @@ userController.getHistory = async (req, res) => {
 };
 
 userController.deleteAllHistory = async (req, res) => {
-  const { id } = jwt.decode(req.session.token.token);
+  const { id } = jwt.decode(req.token);
   try {
     const history = await History.findAll({
       where: { user_id: id },
