@@ -1,6 +1,45 @@
 const authDocumentation = {};
 
 authDocumentation.paths = {
+  "/auth/register": {
+    post: {
+      tags: ["Auth"],
+      summary: "to create a new account",
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                email: {
+                  type: "string",
+                  format: "email",
+                },
+                password: {
+                  type: "string",
+                  example: "Password123",
+                },
+              },
+              required: ["email", "password"],
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          message: "Success",
+          content: {
+            "application/json": {
+              schema: {
+                $ref: "#/components/schemas/register",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   "/auth/login": {
     post: {
       tags: ["Auth"],
@@ -61,6 +100,26 @@ authDocumentation.paths = {
 };
 
 authDocumentation.schemas = {
+  register: {
+    type: "object",
+    properties: {
+      message: {
+        type: "string",
+        example: "Success add user",
+      },
+      data: {
+        type: "array",
+        example: [
+          {
+            id: "2lnokG3l20",
+            email: "JohnDoe@gmail.com",
+            password:
+              "$2b$10$T4/KpTRX4RwIGxK3blJRluPxiwBzdFxcR7Yyw8moQn3/mPLcnGIsO",
+          },
+        ],
+      },
+    },
+  },
   login: {
     type: "object",
     properties: {

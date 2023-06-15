@@ -5,6 +5,11 @@ userDocumentation.paths = {
     get: {
       tags: ["User"],
       summary: "get all fruits",
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
       parameters: [
         {
           name: "name",
@@ -33,6 +38,11 @@ userDocumentation.paths = {
     get: {
       tags: ["User"],
       summary: "get fruits detail by id",
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
       parameters: [
         {
           name: "id",
@@ -62,6 +72,11 @@ userDocumentation.paths = {
     post: {
       tags: ["User"],
       summary: "prediction of fruit ripeness from images",
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
       requestBody: {
         content: {
           "multipart/form-data": {

@@ -4,7 +4,7 @@ adminDocumentation.paths = {
   "/admin/admins": {
     get: {
       tags: ["Admin"],
-      summary: "Get all admins",
+      summary: "Get all users",
       security: [
         {
           bearerAuth: [],
@@ -124,7 +124,7 @@ adminDocumentation.paths = {
   "/admin/delete/{id}": {
     delete: {
       tags: ["Admin"],
-      summary: "Delete admin by id",
+      summary: "Delete user by id",
       security: [
         {
           bearerAuth: [],
@@ -134,7 +134,7 @@ adminDocumentation.paths = {
         {
           in: "path",
           name: "id",
-          description: "id of the admin who wants to be deleted",
+          description: "id of the user who wants to be deleted",
           required: true,
           schema: {
             type: "string",
@@ -479,7 +479,7 @@ adminDocumentation.schemas = {
     properties: {
       message: {
         type: "string",
-        example: "Success delete admin",
+        example: "Success delete user",
       },
 
       data: {
