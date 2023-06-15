@@ -15,7 +15,7 @@ const verifyToken = async (req, res, next) => {
 
   if (!token) return res.status(401).json({ message: "You must be logged in" });
 
-  if (accessToken != req.session.token.token)
+  if (accessToken != token.data.token.token)
     return res.status(401).json({ message: "Invalid access token" });
 
   try {
