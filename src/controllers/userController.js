@@ -34,7 +34,7 @@ userController.predict = async (req, res) => {
     if (response.data.error) throw new Error(response.data.error);
 
     const id = nanoid(10);
-    const user = jwt.decode(req.session.token.token);
+    const user = jwt.decode(req.token);
     await History.create({
       id: id,
       user_id: user.id,
