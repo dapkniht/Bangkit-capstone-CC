@@ -9,7 +9,7 @@ const adminRoutes = express.Router();
 
 //Get all user
 adminRoutes.get(
-  "/admins",
+  "/users",
   verifyToken,
   verifyRole("admin"),
   adminController.getAllUser

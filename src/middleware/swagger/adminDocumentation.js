@@ -1,7 +1,7 @@
 const adminDocumentation = {};
 
 adminDocumentation.paths = {
-  "/admin/admins": {
+  "/admin/users": {
     get: {
       tags: ["Admin"],
       summary: "Get all users",
