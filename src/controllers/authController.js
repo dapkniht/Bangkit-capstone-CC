@@ -14,7 +14,7 @@ authController.register = async (req, res) => {
       where: { email },
     });
     if (isAdded)
-      return res.status(409).json({ message: "user has been registered" });
+      return res.status(409).json({ message: "User has been registered" });
 
     const id = nanoid(10);
     const salt = bcrypt.genSaltSync(10);
@@ -25,7 +25,9 @@ authController.register = async (req, res) => {
       password: hash,
       role: "user",
     });
-    return res.status(201).json({ message: "Success add user", data: addUser });
+    return res
+      .status(201)
+      .json({ message: "Registration successful", data: addUser });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

@@ -105,7 +105,7 @@ authDocumentation.schemas = {
     properties: {
       message: {
         type: "string",
-        example: "Success add user",
+        example: "Registration successful",
       },
       data: {
         type: "array",
