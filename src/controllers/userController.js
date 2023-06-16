@@ -2,10 +2,14 @@ const Fruit = require("../models/Fruit");
 const History = require("../models/History");
 const fs = require("fs");
 const { Op } = require("sequelize");
-const imageToBucket = require("../modules/imageToBucket");
 const axios = require("axios");
 const { nanoid } = require("nanoid");
 const jwt = require("jsonwebtoken");
+const {
+  uploadImage,
+  deleteImage,
+  deleteMultipleImage,
+} = require("../modules/cloudStorage");
 
 const userController = {};
 
@@ -15,7 +19,7 @@ userController.predict = async (req, res) => {
       message: "Only accept image file types with png, jpg, or jpeg types",
     });
   try {
-    const image_url = await imageToBucket(
+    const image_url = await uploadImage(
       req.file.filename,
       "ready2eat-predict-bucket"
     );
@@ -43,7 +47,10 @@ userController.predict = async (req, res) => {
       image: image_url,
     });
 
-    res.status(200).json({ message: "Success", data: response.data });
+    res.status(200).json({
+      message: "Success",
+      data: { ...response.data, image: image_url },
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -85,7 +92,9 @@ userController.getHistory = async (req, res) => {
   try {
     const history = await History.findAll({
       where: { user_id: id },
+      order: [["created_at", "DESC"]],
     });
+
     return res.status(200).json({ message: "Success", data: history });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -104,6 +113,19 @@ userController.deleteAllHistory = async (req, res) => {
         user_id: id,
       },
     });
+
+    const imagesName = history.map((val) => {
+      return val.dataValues.image
+        .split("https://storage.googleapis.com/ready2eat-predict-bucket/")[1]
+        .replace(/%20/g, " ");
+    });
+
+    const deletedImage = await deleteMultipleImage(
+      imagesName,
+      "ready2eat-predict-bucket"
+    );
+    if (deletedImage instanceof Error) throw new Error(deletedImage.message);
+
     return res
       .status(200)
       .json({ message: "Success delete all history", data: history });
@@ -124,6 +146,18 @@ userController.deleteHistoryById = async (req, res) => {
     });
     if (deleteHistory == 0)
       return res.status(404).json({ message: "History id not found" });
+
+    const imageName = history.image
+      .split("https://storage.googleapis.com/ready2eat-predict-bucket/")[1]
+      .replace(/%20/g, " ");
+
+    const deletedImage = await deleteImage(
+      imageName,
+      "ready2eat-predict-bucket"
+    );
+
+    if (deletedImage instanceof Error) throw new Error(deletedImage.message);
+
     return res
       .status(200)
       .json({ message: "Success delete history", data: history });

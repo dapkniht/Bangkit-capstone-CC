@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Fruit = require("../models/Fruit");
-const imageToBucket = require("../modules/imageToBucket");
+const { uploadImage } = require("../modules/cloudStorage");
 
 const adminController = {};
 
@@ -116,7 +116,7 @@ adminController.addNewFruit = async (req, res) => {
         .json({ message: "fruit data has been added to the database" });
 
     const id = nanoid(10);
-    const imageUrl = await imageToBucket(req.file.filename, "ready2eat-bucket");
+    const imageUrl = await uploadImage(req.file.filename, "ready2eat-bucket");
     if (imageUrl instanceof Error) throw new Error(imageUrl.message);
     const addFruit = await Fruit.create({ id, ...req.body, image: imageUrl });
     fs.unlinkSync(req.file.path);
